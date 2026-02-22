@@ -1,58 +1,244 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>
-        MyWebpage
-    </title>
-</head>
-<body bgcolor="#28323c" text="white">
-    <h1 
-    align="center">
-    <span style="color:orange">Wel</span><span style="color:white">come</span> <span style="color:green">All</span>!!</h1>
-    <h2>List of States of South India and their respective Chief Ministers</h2>
-    <hr>
-    <table border=1px bordercolor = "black" align="center"  width="100%" cellpadding="8px" cellspacing="0px" >
-        <colgroup>
-            <col bgcolor = "lightpink" style="color: black">
-            <col bgcolor = "lightblue" style = "color:black">
-            <col bgcolor = "yellow" style="color: black">
-        </colgroup>
-        <thead bgcolor = "indianred">
-            <tr>
-                <th>S.No</th>
-                <th>State</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody align="center" style = "color:black">
-            <tr>
-                <td>1</td>
-                <td bgcolor = "lightblue" style = "color:black">Andhra Pradesh</td>
-                <td bgcolor = "yellow" style="color: black">Nara ChandraBabu Naidu</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Telangana</td>
-                <td>Revanth Reddy</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Karnataka</td>
-                <td>Siddaramaiah</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Tamil Nadu</td>
-                <td>M.K.Stalin</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Kerala</td>
-                <td>Pinarayi Vijayan</td>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Safety Checker — Safe-O-Meter</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-halved"></i>
+                <h1>Safe<span>Check</span></h1>
+            </div>
+            <p class="tagline">AI-powered URL threat analysis in real-time</p>
+        </header>
+
+        <div class="search-section">
+            <div class="input-wrapper">
+                <i class="fas fa-link input-icon"></i>
+                <input type="text" id="urlInput" placeholder="Paste a URL to check its safety..." autocomplete="off"
+                    spellcheck="false">
+                <button id="clearBtn" class="clear-btn hidden" title="Clear">
+                    <i class="fas fa-xmark"></i>
+                </button>
+                <button id="checkBtn" class="check-btn">
+                    <i class="fas fa-magnifying-glass"></i>
+                    <span>Analyze</span>
+                </button>
+            </div>
+            <div class="example-urls">
+                <span>Try:</span>
+                <button class="example" data-url="https://www.google.com">google.com</button>
+                <button class="example" data-url="http://free-prizes-winner.xyz/claim?id=38291&ref=virus">suspicious
+                    link</button>
+                <button class="example" data-url="https://github.com/openai">github.com</button>
+                <button class="example"
+                    data-url="http://192.168.1.1:8080/admin/login.php?redirect=http://evil.com">IP-based link</button>
+                <button class="example" data-url="https://goog1e.com/accounts/phishing-page.html">typosquatting</button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state hidden">
+            <div class="scanner">
+                <div class="scanner-line"></div>
+                <div class="scanner-grid">
+                    <div class="scan-item" data-step="1">
+                        <div class="scan-dot"></div>
+                        <span>Analyzing URL structure...</span>
+                    </div>
+                    <div class="scan-item" data-step="2">
+                        <div class="scan-dot"></div>
+                        <span>Checking domain reputation...</span>
+                    </div>
+                    <div class="scan-item" data-step="3">
+                        <div class="scan-dot"></div>
+                        <span>Detecting phishing patterns...</span>
+                    </div>
+                    <div class="scan-item" data-step="4">
+                        <div class="scan-dot"></div>
+                        <span>Evaluating SSL & encryption...</span>
+                    </div>
+                    <div class="scan-item" data-step="5">
+                        <div class="scan-dot"></div>
+                        <span>Computing safety score...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="results-section hidden">
+            <div class="meter-container">
+                <div class="meter-label">SAFE-O-METER</div>
+                <div class="gauge-wrapper">
+                    <svg class="gauge" viewBox="0 0 300 180">
+                        <defs>
+                            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#ff1744" />
+                                <stop offset="25%" style="stop-color:#ff6d00" />
+                                <stop offset="50%" style="stop-color:#ffd600" />
+                                <stop offset="75%" style="stop-color:#aeea00" />
+                                <stop offset="100%" style="stop-color:#00e676" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Background arc -->
+                        <path class="gauge-bg" d="M 30 160 A 120 120 0 0 1 270 160" fill="none"
+                            stroke="rgba(255,255,255,0.08)" stroke-width="20" stroke-linecap="round" />
+                        <!-- Colored arc -->
+                        <path class="gauge-fill" d="M 30 160 A 120 120 0 0 1 270 160" fill="none"
+                            stroke="url(#gaugeGradient)" stroke-width="20" stroke-linecap="round" stroke-dasharray="377"
+                            stroke-dashoffset="377" />
+                        <!-- Tick marks -->
+                        <g class="tick-marks">
+                            <line x1="30" y1="160" x2="40" y2="160" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                            <line x1="55" y1="100" x2="63" y2="106" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                            <line x1="110" y1="55" x2="114" y2="64" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                            <line x1="150" y1="40" x2="150" y2="50" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                            <line x1="190" y1="55" x2="186" y2="64" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                            <line x1="245" y1="100" x2="237" y2="106" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                            <line x1="270" y1="160" x2="260" y2="160" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                        </g>
+                        <!-- Gauge labels -->
+                        <text x="25" y="178" class="gauge-text" fill="rgba(255,255,255,0.5)">0</text>
+                        <text x="146" y="30" class="gauge-text" fill="rgba(255,255,255,0.5)">50</text>
+                        <text x="268" y="178" class="gauge-text" fill="rgba(255,255,255,0.5)">100</text>
+                        <!-- Needle -->
+                        <g class="needle-group" transform="rotate(-90, 150, 160)">
+                            <line class="needle" x1="150" y1="160" x2="150" y2="55" stroke="#fff" stroke-width="3"
+                                stroke-linecap="round" />
+                            <circle cx="150" cy="160" r="8" fill="#fff" />
+                            <circle cx="150" cy="160" r="4" fill="#1a1a2e" />
+                        </g>
+                    </svg>
+                    <div class="score-display">
+                        <div id="scoreValue" class="score-value">0</div>
+                        <div id="scoreLabel" class="score-label">Analyzing...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="verdictCard" class="verdict-card">
+                <div class="verdict-icon">
+                    <i id="verdictIcon" class="fas fa-shield-halved"></i>
+                </div>
+                <div class="verdict-text">
+                    <h2 id="verdictTitle">Checking...</h2>
+                    <p id="verdictDescription">Please wait while we analyze this URL.</p>
+                </div>
+            </div>
+
+            <div class="analyzed-url">
+                <i class="fas fa-globe"></i>
+                <span id="analyzedUrl">—</span>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-card" id="protocolCard">
+                    <div class="detail-header">
+                        <i class="fas fa-lock"></i>
+                        <span>Protocol & Encryption</span>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-status" id="protocolStatus"></div>
+                        <div class="detail-info" id="protocolInfo"></div>
+                    </div>
+                </div>
+
+                <div class="detail-card" id="domainCard">
+                    <div class="detail-header">
+                        <i class="fas fa-server"></i>
+                        <span>Domain Analysis</span>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-status" id="domainStatus"></div>
+                        <div class="detail-info" id="domainInfo"></div>
+                    </div>
+                </div>
+
+                <div class="detail-card" id="contentCard">
+                    <div class="detail-header">
+                        <i class="fas fa-code"></i>
+                        <span>Content & Path</span>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-status" id="contentStatus"></div>
+                        <div class="detail-info" id="contentInfo"></div>
+                    </div>
+                </div>
+
+                <div class="detail-card" id="phishingCard">
+                    <div class="detail-header">
+                        <i class="fas fa-fish"></i>
+                        <span>Phishing Detection</span>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-status" id="phishingStatus"></div>
+                        <div class="detail-info" id="phishingInfo"></div>
+                    </div>
+                </div>
+
+                <div class="detail-card" id="reputationCard">
+                    <div class="detail-header">
+                        <i class="fas fa-star"></i>
+                        <span>Reputation Score</span>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-status" id="reputationStatus"></div>
+                        <div class="detail-info" id="reputationInfo"></div>
+                    </div>
+                </div>
+
+                <div class="detail-card" id="redirectCard">
+                    <div class="detail-header">
+                        <i class="fas fa-route"></i>
+                        <span>Redirect & Obfuscation</span>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-status" id="redirectStatus"></div>
+                        <div class="detail-info" id="redirectInfo"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Threat Breakdown -->
+            <div class="threat-breakdown">
+                <h3><i class="fas fa-chart-bar"></i> Threat Breakdown</h3>
+                <div class="threat-bars" id="threatBars">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Findings List -->
+            <div class="findings-section">
+                <h3><i class="fas fa-list-check"></i> Detailed Findings</h3>
+                <div class="findings-list" id="findingsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p><i class="fas fa-info-circle"></i> This tool uses heuristic analysis and machine-learning-inspired
+                scoring. It does not guarantee absolute safety. Always exercise caution.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
